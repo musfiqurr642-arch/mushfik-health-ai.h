@@ -58,9 +58,9 @@ if user_prompt := st.chat_input("Ask me anything about health, wellness, fitness
         message_placeholder = st.empty()
         
         try:
-            # Using the stable, universally supported classic Groq model
+            # Using Groq's active and ultra-fast llama-3.1-8b-instant model
             completion = client.chat.completions.create(
-                model="llama3-70b-8192",
+                model="llama-3.1-8b-instant",
                 messages=st.session_state.messages,
                 temperature=0.7,
             )
