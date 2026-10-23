@@ -11,7 +11,7 @@ st.set_page_config(
 # 2. Initialize xAI Grok Client
 # Replace with your actual xAI API Key or set it as an environment variable (XAI_API_KEY)
 # Get your key from: https://console.x.ai/
-XAI_API_KEY = "grok_e053151d64cba4953acfa1d8883d1db2_4c29a1bf24d0c5b0d76f16e1f1b2093aa3f1a6b4162f6d2722fad1c193c12615"  # Or use os.getenv("XAI_API_KEY")
+XAI_API_KEY = "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"  # Or use os.getenv("XAI_API_KEY")
 
 client = OpenAI(
     api_key=XAI_API_KEY,
