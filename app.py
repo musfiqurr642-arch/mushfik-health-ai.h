@@ -11,7 +11,7 @@ st.set_page_config(
 # 2. Direct Groq API Key
 GROQ_API_KEY = "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"
 
-# 3. Initialize Client
+# 3. Initialize OpenAI Client pointing to Groq
 client = OpenAI(
     api_key=GROQ_API_KEY,
     base_url="https://api.groq.com/openai/v1"
@@ -58,9 +58,9 @@ if user_prompt := st.chat_input("Ask me anything about health, wellness, fitness
         message_placeholder = st.empty()
         
         try:
-            # Using Groq's active and ultra-fast llama-3.1-8b-instant model
+            # Active active model on Groq console: openai/gpt-oss-20b
             completion = client.chat.completions.create(
-                model="llama-3.1-8b-instant",
+                model="openai/gpt-oss-20b",
                 messages=st.session_state.messages,
                 temperature=0.7,
             )
