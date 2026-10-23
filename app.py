@@ -38,7 +38,7 @@ if "messages" not in st.session_state:
 
 # 6. UI Header
 st.title("🩺 Mushfik's Health AI")
-st.caption("Your advanced, conversational health assistant powered by Groq & Llama")
+st.caption("Your advanced, conversational health assistant powered by Groq")
 
 # 7. Display Chat History
 for message in st.session_state.messages:
@@ -58,9 +58,9 @@ if user_prompt := st.chat_input("Ask me anything about health, wellness, fitness
         message_placeholder = st.empty()
         
         try:
-            # Using the latest active Groq Llama 3.3 model
+            # Using the stable, universally supported classic Groq model
             completion = client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
+                model="llama3-70b-8192",
                 messages=st.session_state.messages,
                 temperature=0.7,
             )
