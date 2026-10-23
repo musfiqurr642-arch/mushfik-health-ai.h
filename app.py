@@ -8,17 +8,25 @@ st.set_page_config(
     layout="centered"
 )
 
-# 2. Initialize xAI Grok Client
-# Replace with your actual xAI API Key or set it as an environment variable (XAI_API_KEY)
-# Get your key from: https://console.x.ai/
-XAI_API_KEY = "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"  # Or use os.getenv("XAI_API_KEY")
+st.title("🩺 Mushfik's Health AI")
+st.caption("Your advanced, conversational health assistant powered by Grok")
 
-client = OpenAI(
-    api_key=XAI_API_KEY,
-    base_url="https://api.x.ai/v1",  # xAI official API endpoint
+# 2. Sidebar API Key Input (For easy testing without secrets issue)
+st.sidebar.header("⚙️ Settings")
+api_key_input = st.sidebar.text_input(
+    "Enter xAI API Key:", 
+    type="password", 
+    placeholder="xai-..."
 )
 
-# 3. System Prompt defining personality, memory capability, and health focus
+# Fallback to Streamlit secrets if sidebar is empty
+if not api_key_input:
+    try:
+        api_key_input = st.secrets["XAI_API_KEY"]
+    except Exception:
+        api_key_input = ""
+
+# 3. System Prompt defining personality and health focus
 SYSTEM_PROMPT = """
 You are "Mushfik AI", an advanced, highly empathetic, and natural-sounding health and medical AI assistant. 
 Your creator/developer is Mushfik. 
@@ -32,49 +40,48 @@ if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "system", "content": SYSTEM_PROMPT}
     ]
-    # Initial greeting from the AI to set the persona
     st.session_state.messages.append({
         "role": "assistant",
         "content": "Hello! I am **Mushfik AI**, your advanced health and wellness companion. How are you feeling today, or what health topics would you like to explore?"
     })
 
-# 5. UI Header
-st.title("🩺 Mushfik's Health AI")
-st.caption("Your advanced, conversational health assistant powered by Grok")
-
-# 6. Display Chat History (Skipping the system prompt visual display)
+# 5. Display Chat History
 for message in st.session_state.messages:
     if message["role"] != "system":
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-# 7. Handle User Input
+# 6. Handle User Input
 if user_prompt := st.chat_input("Ask me anything about health, wellness, fitness..."):
-    # Append user message to state memory
-    st.session_state.messages.append({"role": "user", "content": user_prompt})
-    
-    with st.chat_message("user"):
-        st.markdown(user_prompt)
-
-    # Generate response from Grok API with full history context
-    with st.chat_message("assistant"):
-        message_placeholder = st.empty()
-        full_response = ""
+    if not api_key_input:
+        st.error("⚠️ Prothom e sidebar theke apnar xAI API key-ti din!")
+    else:
+        st.session_state.messages.append({"role": "user", "content": user_prompt})
         
-        try:
-            # Call Grok model (grok-beta or grok-2)
-            completion = client.chat.completions.create(
-                model="grok-2-latest",  # You can also use "grok-beta"
-                messages=st.session_state.messages,
-                temperature=0.7,
-            )
-            
-            full_response = completion.choices[0].message.content
-            message_placeholder.markdown(full_response)
-            
-        except Exception as e:
-            full_response = f"⚠️ Error connecting to Grok API: {e}"
-            message_placeholder.markdown(full_response)
+        with st.chat_message("user"):
+            st.markdown(user_prompt)
 
-    # Save assistant response to session state memory
-    st.session_state.messages.append({"role": "assistant", "content": full_response})
+        with st.chat_message("assistant"):
+            message_placeholder = st.empty()
+            full_response = ""
+            
+            try:
+                # Initialize OpenAI client with dynamic key
+                client = OpenAI(
+                    api_key=api_key_input,
+                    base_url="https://api.x.ai/v1",
+                )
+                
+                completion = client.chat.completions.create(
+                    model="grok-2-latest",
+                    messages=st.session_state.messages,
+                    temperature=0.7,
+                )
+                full_response = completion.choices[0].message.content
+                message_placeholder.markdown(full_response)
+                
+            except Exception as e:
+                full_response = f"⚠️ Error connecting to Grok API: {e}"
+                message_placeholder.markdown(full_response)
+
+        st.session_state.messages.append({"label": "assistant", "role": "assistant", "content": full_response})
