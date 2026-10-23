@@ -8,8 +8,8 @@ st.set_page_config(
     layout="centered"
 )
 
-# 2. Initialize xAI Grok Client with API key directly in the code
-XAI_API_KEY = "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"  # Ekhane apnar asol xAI API key-ti bosiye deben
+# 2. Initialize xAI Grok Client with API key directly
+XAI_API_KEY = "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"  # Apnar asol xAI API key-ti ekhane din
 
 client = OpenAI(
     api_key=XAI_API_KEY,
@@ -57,9 +57,9 @@ if user_prompt := st.chat_input("Ask me anything about health, wellness, fitness
         full_response = ""
         
         try:
-            # Call Grok model (grok-beta)
+            # Call Grok model (grok-3 or latest)
             completion = client.chat.completions.create(
-                model="grok-beta",  # Model changed to grok-beta
+                model="grok-3",  # Sothik updated model name
                 messages=st.session_state.messages,
                 temperature=0.7,
             )
