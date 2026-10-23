@@ -11,7 +11,7 @@ st.set_page_config(
 # 2. Initialize xAI Grok Client
 # Replace with your actual xAI API Key or set it as an environment variable (XAI_API_KEY)
 # Get your key from: https://console.x.ai/
-XAI_API_KEY = "grok_820d28c2da640d3a01f1b7aac220200d_1ef9211cacd9d7ad7d1742070ce3f408534a46f2f7dc3aec859ea430d35353e3"  # Or use os.getenv("XAI_API_KEY")
+XAI_API_KEY = "your_xai_api_key_here"  # Or use os.getenv("XAI_API_KEY")
 
 client = OpenAI(
     api_key=XAI_API_KEY,
@@ -76,5 +76,5 @@ if user_prompt := st.chat_input("Ask me anything about health, wellness, fitness
             full_response = f"⚠️ Error connecting to Grok API: {e}"
             message_placeholder.markdown(full_response)
 
--    # Save assistant response to session state memory
+    # Save assistant response to session state memory
     st.session_state.messages.append({"role": "assistant", "content": full_response})
