@@ -14,7 +14,7 @@ st.write("নবম শ্রেণীর বিজ্ঞান মেলার 
 st.sidebar.header("⚙️ সেটিংস ও কনফিগারেশন")
 
 # Groq API Key (সুরক্ষিত ও কোডের ভেতরে লুকানো)
-GROQ_API_KEY = "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"
+GROQ_API_KEY = "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"
 
 # এআই সার্ভারে রিকোয়েস্ট পাঠানোর ফাংশন
 def call_groq_ai(prompt):
